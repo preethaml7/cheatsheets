@@ -1,14 +1,78 @@
 # tmux-cheatsheet
 
-## Installation
+## Usage
 
-### Ubuntu
+### Sessions
 
-Install tmux:
+Create a new session:
 
 ```bash
-sudo apt install tmux -y
+tmux new -s mysession
 ```
+
+List sessions:
+
+```bash
+tmux ls
+```
+
+Attach to a session:
+
+```bash
+tmux atttach -t mysession
+```
+
+Detach from a session:
+
+```bash
+Ctrl+b then d
+```
+
+Kill a session:
+
+```bash
+tmux kill-session -t mysession
+```
+
+### Windows
+
+New window:
+
+```bash
+Ctrl+b then c
+```
+
+Rename window:
+
+```bash
+Ctrl+b then ,
+```
+
+Next window:
+
+```bash
+Ctrl+b then n
+```
+
+Previous window
+
+```bash
+Ctrl+b then p
+```
+
+Select window by number:
+
+```bash
+Ctrl+b then 0-9
+```
+
+Close window:
+
+```bash
+Ctrl+b then &
+```
+
+## Plugins
 
 Install tmux plugin manager:
 
