@@ -2,6 +2,9 @@
 
 ## Table of Contents
 
+- [Nodes](#nodes)
+- [Pods](#pods)
+- [Logs](#logs)
 - [Secrets](#secrets)
   - [Create Secret from File](#create-secret-from-file)
   - [Create Secret from Literals](#create-secret-from-literals)
@@ -47,6 +50,12 @@ Check nodes:
 kubectl get nodes -o wide
 ```
 
+View nodes with a specific label:
+
+```bash
+kubectl get nodes -l node=observability
+```
+
 Check if nodes have taints applied:
 
 ```bash
@@ -65,6 +74,20 @@ View pods by label selector:
 
 ```bash
 kubectl get pods -n monitoring --selector 'app.kubernetes.io/name=promtail' -w -o wide
+```
+
+View pods on a specific node:
+
+```bash
+kubectl get pods -n observability -o wide --field-selector spec.nodeName=ip-10-0-3-107.eu-west-1.compute.internal
+```
+
+View pods with and show custom columns:
+
+```bash
+kubectl get pods -n observability --selector "app.kubernetes.io/name=loki" \
+-o=jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.nodeName}{"\t"}{range .spec.containers[*]}{.resources.requests.cpu}{"\t"}{.resources.requests.memory}{"\n"}{end}{end}' \
+| column -t
 ```
 
 ## Deployments
@@ -88,6 +111,16 @@ Display only the pod name with label selectors:
 ```bash
 kubectl get pods -n gitea -o custom-columns=NAME:.metadata.name -l 'app=gitea' --no-headers
 # gitea-69f6b67895-6hwq6
+```
+
+## Logs
+
+### Cluster Autoscaler
+
+View scale down events:
+
+```bash
+kubectl logs -n kube-system deployment/autoscaler-aws-cluster-autoscaler  --since=15m | grep -E "scale.?down|remove|unneeded|empty|lastScaleDownDeleteTime"
 ```
 
 ## Secrets
